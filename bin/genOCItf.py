@@ -19,14 +19,14 @@ def generateconfig(args):
         if file.endswith(".tf"):
             newconfig = config.Cfg(args.input_yaml,
                                    os.path.join(args.input_tf_templates_dir,
-                                                file) ,
+                                                file),
                                    os.path.join(args.output_tf_dir,
                                                 file))
             newconfig.generate()
             logger.info(newconfig.getGeneratedCfg())
             logger.info("Done")
 
-        
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
