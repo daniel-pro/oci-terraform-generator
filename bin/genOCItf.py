@@ -15,6 +15,8 @@ import sys
 
 
 def generateconfig(args):
+    if not os.path.exists(args.output_tf_dir):
+        os.makedirs(args.output_tf_dir)
     for file in os.listdir(args.input_tf_templates_dir):
         newconfig = config.Cfg(args.input_yaml,
                                os.path.join(args.input_tf_templates_dir,
