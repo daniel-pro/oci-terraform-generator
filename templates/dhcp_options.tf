@@ -12,8 +12,6 @@ resource "oci_core_dhcp_options" "{{ item.name }}" {
 {% if item.option_DomainNameServer_custom_dns_servers  is defined %}
                custom_dns_servers = [ {{ item.option_DomainNameServer_custom_dns_servers }} ]
 {% endif %}
-    }
-    options = {
                type = "SearchDomain"
                search_domain_names  = [ "{{ item.option_SearchDomain_search_domain_names }}" ]
     }
