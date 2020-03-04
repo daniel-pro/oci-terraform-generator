@@ -16,15 +16,14 @@ import sys
 
 def generateconfig(args):
     for file in os.listdir(args.input_tf_templates_dir):
-        if file.endswith(".tf"):
-            newconfig = config.Cfg(args.input_yaml,
-                                   os.path.join(args.input_tf_templates_dir,
-                                                file),
-                                   os.path.join(args.output_tf_dir,
-                                                file))
-            newconfig.generate()
-            logger.info(newconfig.getGeneratedCfg())
-            logger.info("Done")
+        newconfig = config.Cfg(args.input_yaml,
+                               os.path.join(args.input_tf_templates_dir,
+                                            file),
+                               os.path.join(args.output_tf_dir,
+                                            file))
+        newconfig.generate()
+        logger.info(newconfig.getGeneratedCfg())
+        logger.info("Done")
 
 
 if __name__ == '__main__':
