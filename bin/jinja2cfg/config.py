@@ -45,12 +45,12 @@ class Cfg(object):
         templatePath = str(pathlib.Path(self._CfgTemplate).parent)
         templateFile = pathlib.Path(self._CfgTemplate).name
         self._Logger.info("Loading templates from "+templatePath+" directory")
+        self._Logger.info("Creating "+self._CfgOutputFile+" config file "
+                              "using "+self._CfgTemplate+" template")
         env = Environment(loader=FileSystemLoader(templatePath),
                           trim_blocks=True, lstrip_blocks=True)
         template = env.get_template(templateFile)
         if (self._CfgOutputFile != ""):
-            self._Logger.info("Creating "+self._CfgOutputFile+" config file "
-                              "using "+self._CfgTemplate+" template")
             f = open(self._CfgOutputFile, "w")
             f.write(template.render(config_data))
             f.close()
