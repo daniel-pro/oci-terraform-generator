@@ -1,7 +1,6 @@
 {%- if oci_block_volumes is defined %}
 
 {% for item in oci_block_volumes %}
-
 resource "oci_core_volume" "{{ item.name }}" {
     compartment_id = "${oci_identity_compartment.{{ item.compartment_name }}.id}"
     availability_domain = "{{ item.availability_domain }}" 
@@ -33,6 +32,12 @@ resource "oci_core_volume" "{{ item.name }}" {
     freeform_tags = { {{ item.freeform_tags }} }
 {% endif %}
 
+}
+{% endfor %}
+
+{% for item in oci_block_volumes %}
+data "oci_core_volume" "{{ item.name }}" {
+    volume_id = "${oci_core_volume.{{ item.name }}.id}"
 }
 {% endfor %}
 {%- endif %}
