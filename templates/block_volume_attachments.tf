@@ -11,6 +11,10 @@ resource "oci_core_volume_attachment" "{{ item.name }}" {
     is_readonly = "{{ item.is_readonly }}"
 {% endif %}
 
+{% if item.is_shareable is defined %}
+    is_shareable = "{{ item.is_shareable }}"
+{% endif %}
+
 {% if item.use_chap is defined %}
     use_chap = "{{ item.use_chap }}"
 {% endif %}
