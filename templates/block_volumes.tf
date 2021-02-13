@@ -37,7 +37,7 @@ resource "oci_core_volume" "{{ item.name }}" {
 
 {% for item in oci_block_volumes %}
 data "oci_core_volume" "{{ item.name }}" {
-    volume_id = "oci_core_volume.{{ item.name }}.id"
+    volume_id = oci_core_volume.{{ item.name }}.id
 }
 {% endfor %}
 {%- endif %}

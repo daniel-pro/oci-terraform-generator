@@ -73,7 +73,7 @@ resource "oci_core_instance" "{{ item.name }}" {
 
 {% for item in oci_compute_instances %}
 data "oci_core_instance" "{{ item.name }}" {
-    instance_id = "oci_core_instance.{{ item.name }}.id"
+    instance_id = oci_core_instance.{{ item.name }}.id
 }
 {% endfor %}
 {%- endif %}
