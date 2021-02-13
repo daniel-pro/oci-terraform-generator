@@ -3,7 +3,7 @@
 {% for item in oci_cpes %}
 
 resource "oci_core_cpe" "{{ item.name }}" {
-    compartment_id = "${oci_identity_compartment.{{ item.compartment_name }}.id}"
+    compartment_id = "oci_identity_compartment.{{ item.compartment_name }}.id"
     ip_address = "{{ item.ip_address }}"
     display_name = "{{ item.name }}"
 

@@ -4,7 +4,7 @@
 
 resource "oci_core_vcn" "{{ item.name }}" {
     cidr_block = "{{ item.cidr_block }}"
-    compartment_id = "${oci_identity_compartment.{{ item.compartment_name }}.id}"
+    compartment_id = "oci_identity_compartment.{{ item.compartment_name }}.id"
     display_name = "{{ item.name }}"
 
 {% if item.defined_tags is defined %}
