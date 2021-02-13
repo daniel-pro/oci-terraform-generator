@@ -2,7 +2,7 @@
 
 {% for item in oci_block_volumes %}
 resource "oci_core_volume" "{{ item.name }}" {
-    compartment_id = "${oci_identity_compartment.{{ item.compartment_name }}.id}"
+    compartment_id = "oci_identity_compartment.{{ item.compartment_name }}.id"
     availability_domain = "{{ item.availability_domain }}" 
     display_name = "{{ item.name }}"
     size_in_gbs  = "{{ item.size_in_gbs }}"
@@ -13,7 +13,7 @@ resource "oci_core_volume" "{{ item.name }}" {
 
 {% if (item.source_details_id is defined) and (item.source_details_type is defined) %}
     source_details {
-        id = "${oci_core_volume.{{ item.source_volume_name }}.id}"
+        id = "oci_core_volume.{{ item.source_volume_name }}.id"
         type = "{{ item.source_volume_type }}"
     }
     backup_policy_id = "$oci_core_backup_policy.{{ item.backup_policy_name }}.id"
@@ -37,7 +37,7 @@ resource "oci_core_volume" "{{ item.name }}" {
 
 {% for item in oci_block_volumes %}
 data "oci_core_volume" "{{ item.name }}" {
-    volume_id = "${oci_core_volume.{{ item.name }}.id}"
+    volume_id = "oci_core_volume.{{ item.name }}.id"
 }
 {% endfor %}
 {%- endif %}
