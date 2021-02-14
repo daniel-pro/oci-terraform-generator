@@ -41,7 +41,7 @@ class Cfg(object):
         config into _CfgGenerated variable
         '''
         self._Logger.info("Loading config data from "+self._CfgYAMLData)
-        config_data = yaml.load(open(self._CfgYAMLData))
+        config_data = yaml.load(open(self._CfgYAMLData), Loader=yaml.FullLoader)
         templatePath = str(pathlib.Path(self._CfgTemplate).parent)
         templateFile = pathlib.Path(self._CfgTemplate).name
         self._Logger.info("Loading templates from "+templatePath+" directory")
