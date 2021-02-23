@@ -3,8 +3,8 @@
 
 resource "oci_core_volume_attachment" "{{ item.name }}" {
     attachment_type = "{{ item.attachment_type }}"
-    instance_id = "oci_core_instance.{{ item.instance_name }}.id"
-    volume_id = "oci_core_volume.{{ item.volume_name }}.id"
+    instance_id = oci_core_instance.{{ item.instance_name }}.id
+    volume_id = oci_core_volume.{{ item.volume_name }}.id
     display_name = "{{ item.name }}"
 
 {% if item.is_readonly is defined %}
@@ -28,7 +28,7 @@ resource "oci_core_volume_attachment" "{{ item.name }}" {
 
 {% if item.attachment_type == 'iscsi' %}
 connection {
-   host = "oci_core_instance.{{ item.instance_name }}.create_vnic_details.0.private_ip"
+   host = oci_core_instance.{{ item.instance_name }}.create_vnic_details.0.private_ip
    user = "opc"
    private_key = "file("{{ remote_exec_ssh_pkey_file }}")"
 }
