@@ -49,7 +49,7 @@ resource "oci_core_instance" "{{ item.name }}" {
         boot_volume_size_in_gbs = "{{ item.source_details_boot_volume_size_in_gbs }}"
 {% endif %}
 {% if item.source_details_kms_key_name is defined %}
-        kms_key_id = "oci_core_kms_key.{{ item.source_details_kms_key_name }}.id"
+        kms_key_id = oci_core_kms_key.{{ item.source_details_kms_key_name }}.id
 {% endif %}
     }
 {% if item.preserve_boot_volume is defined %}

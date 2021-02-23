@@ -1,7 +1,7 @@
 {%- if oci_public_ips is defined %}
 {% for item in oci_public_ips %}
 resource "oci_core_public_ip" "{{ item.name }}" {
-  compartment_id = "oci_identity_compartment.{{ item.compartment_name }}.id"
+  compartment_id = oci_identity_compartment.{{ item.compartment_name }}.id
   display_name   = "{{ item.name }}"
   lifetime       = "{{ item.lifetime }}"
 
