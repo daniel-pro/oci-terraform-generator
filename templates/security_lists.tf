@@ -3,9 +3,9 @@
 {% for item in oci_security_lists %}
 
 resource "oci_core_security_list" "{{ item.name }}" {
-    compartment_id = "oci_identity_compartment.{{ item.compartment_name }}.id"
+    compartment_id = oci_identity_compartment.{{ item.compartment_name }}.id
     display_name   = "{{ item.name }}"
-    vcn_id         = "oci_core_vcn.{{ item.vcn_name }}.id"
+    vcn_id         = oci_core_vcn.{{ item.vcn_name }}.id
 
 {% for egress_item in item.egress_rules %}
     egress_security_rules {

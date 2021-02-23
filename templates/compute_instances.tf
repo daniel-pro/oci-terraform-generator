@@ -2,13 +2,13 @@
 
 {% for item in oci_compute_instances %}
 resource "oci_core_instance" "{{ item.name }}" {
-    compartment_id = "oci_identity_compartment.{{ item.compartment_name }}.id"
+    compartment_id = oci_identity_compartment.{{ item.compartment_name }}.id
     availability_domain = "{{ item.availability_domain }}"
     display_name = "{{ item.name }}"
     shape = "{{ item.shape }}"
 
     create_vnic_details {
-        subnet_id = "oci_core_subnet.{{ item.vnic_subnet_name }}.id"
+        subnet_id = oci_core_subnet.{{ item.vnic_subnet_name }}.id
         assign_public_ip = "{{ item.vnic_assign_public_ip }}"
 {% if item.vnic_defined_tags is defined %}
         defined_tags = { {{ item.vnic_defined_tags }} }

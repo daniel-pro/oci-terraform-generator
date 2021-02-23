@@ -3,7 +3,7 @@
 {% for item in oci_drgs %}
 
 resource "oci_core_drg" "{{ item.name }}" {
-    compartment_id = "oci_identity_compartment.{{ item.compartment_name }}.id"
+    compartment_id = oci_identity_compartment.{{ item.compartment_name }}.id
     display_name = "{{ item.name }}"
 
 {% if item.defined_tags is defined %}
@@ -21,8 +21,8 @@ resource "oci_core_drg" "{{ item.name }}" {
 }
 
 resource "oci_core_drg_attachment" "{{ item.name }}-{{ item.attach_to_vcn }}" {
-    drg_id = "oci_core_drg.{{ item.name }}.id"
-    vcn_id = "oci_core_vcn.{{ item.attach_to_vcn }}.id"
+    drg_id = oci_core_drg.{{ item.name }}.id
+    vcn_id = oci_core_vcn.{{ item.attach_to_vcn }}.id
     display_name = "{{ item.attachment_name }}"
 }
 
