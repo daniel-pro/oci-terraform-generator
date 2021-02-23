@@ -1,4 +1,4 @@
-# oci-terraform-jinja2-templates
+# oci-terraform-generator
 Oracle Cloud Generator takes as input a bunch of terraform templates - written with Jinja2 -, a single YAML input file and generates usable terraform files.  
 
 # Limitations
