@@ -3,13 +3,13 @@
 {% for item in oci_service_gateways %}
 
 resource "oci_core_service_gateway" "{{ item.name }}" {
-    compartment_id = "oci_identity_compartment.{{ item.compartment_name }}.id"
-    vcn_id = "oci_core_vcn.{{ item.vcn_name }}.id"
+    compartment_id = oci_identity_compartment.{{ item.compartment_name }}.id
+    vcn_id = oci_core_vcn.{{ item.vcn_name }}.id
     display_name = "{{ item.name }}"
     services = [
 {%- if item.service_ids is defined %}
 {% for service_ids_item in item.service_ids %}
-       service_id = "oci_objectstorage_object.{{ service_ids_item }}.id",
+       service_id = oci_objectstorage_object.{{ service_ids_item }}.id,
 {% endfor %}
 {%- endif %}
     ]

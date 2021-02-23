@@ -3,8 +3,8 @@
 {% for item in oci_internet_gateways %}
 
 resource "oci_core_internet_gateway" "{{ item.name }}" {
-    compartment_id = "oci_identity_compartment.{{ item.compartment_name }}.id"
-    vcn_id = "oci_core_vcn.{{ item.vcn_name }}.id"
+    compartment_id = oci_identity_compartment.{{ item.compartment_name }}.id
+    vcn_id = oci_core_vcn.{{ item.vcn_name }}.id
     display_name = "{{ item.name }}"
 
 {% if item.defined_tags is defined %}
