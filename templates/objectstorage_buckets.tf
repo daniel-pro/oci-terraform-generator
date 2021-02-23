@@ -3,14 +3,14 @@
 {% for item in oci_objectstorage_buckets %}
 
 resource "oci_objectstorage_bucket" "{{ item.name }}" {
-    compartment_id = "oci_identity_compartment.{{ item.compartment_name }}.id"
+    compartment_id = oci_identity_compartment.{{ item.compartment_name }}.id
     name = "{{ item.name }}"
     namespace = "{{ item.namespace }}"
 {% if item.access_type is defined %}
     access_type = "{{ item.access_type }}"
 {% endif %}
 {% if item.kms_key_name is defined %}
-    kms_key_id = "oci_kms_key.{{ item.kms_key_name }}.id"
+    kms_key_id = oci_kms_key.{{ item.kms_key_name }}.id
 {% endif %}
 {% if item.metadata is defined %}
     metadata = "{{ item.metadata }}"
