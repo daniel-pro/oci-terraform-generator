@@ -3,8 +3,8 @@
 {% for item in oci_file_storage_exports %}
 
 resource "oci_file_storage_export" "{{ item.name }}" {
-    export_set_id = "oci_file_storage_mount_target.{{ item.mount_target_name }}.export_set_id"
-    file_system_id = "oci_file_storage_file_system.{{ item.filesystem_name }}.id"
+    export_set_id = oci_file_storage_mount_target.{{ item.mount_target_name }}.export_set_id
+    file_system_id = oci_file_storage_file_system.{{ item.filesystem_name }}.id
     path = "{{ item.path }}"
     export_options {
         source = "{{ item.source }}"
