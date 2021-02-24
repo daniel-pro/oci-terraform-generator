@@ -1,0 +1,247 @@
+---
+
+oci_root_compartment_id: ocid1.tenancy.oc1..<<<<>>>>
+
+oci_compartments:
+   - name : 'Code-Comp01'  
+     description: 'Code Compartment 01' 
+     freeform_tags: '"Department"= "Finance"'
+
+oci_vcns:
+   - name : 'CODE-VCN01' 
+     cidr_block: '10.25.0.0/16' 
+     compartment_name: 'CODE-Comp01' 
+     dns_label: 'codevcn01'
+
+oci_security_lists:
+   - name : 'CODE-VCN01-SecList01' 
+     compartment_name: 'CODE-Comp01'
+     vcn_name: 'CODE-VCN01'
+     egress_rules: 
+          - destination: '0.0.0.0/0'
+            protocol: all
+     ingress_rules:
+          - source: '0.0.0.0/0'
+            protocol: 6 # 6=TCP 1=ICMP 4=IPv4 17=UDP
+            max_tcp_port: 22
+            min_tcp_port: 22
+
+          - source: '0.0.0.0/0'
+            protocol: 1 # 6=TCP 1=ICMP 4=IPv4 17=UDP
+
+          - source: '0.0.0.0/0'
+            protocol: 6 # 6=TCP 1=ICMP 4=IPv4 17=UDP
+            max_tcp_port: 80
+            min_tcp_port: 80
+
+          - source: '0.0.0.0/0'
+            protocol: 6 # 6=TCP 1=ICMP 4=IPv4 17=UDP
+            max_tcp_port: 443
+            min_tcp_port: 443
+
+          - source: '0.0.0.0/0'
+            protocol: 6 # 6=TCP 1=ICMP 4=IPv4 17=UDP
+            max_tcp_port: 8080
+            min_tcp_port: 8080
+
+          - source: '192.168.0.0/16'
+            protocol: 'all'  # 6=TCP 1=ICMP 4=IPv4 17=UDP
+
+oci_nat_gateways:
+   - name : 'CODE-VCN01-NGW01'
+     compartment_name: 'CODE-Comp01'
+     vcn_name: 'CODE-VCN01'
+
+oci_internet_gateways:
+   - name : 'CODE-VCN01-IGW01'
+     compartment_name: 'CODE-Comp01'
+     vcn_name: 'CODE-VCN01'
+
+oci_route_tables:           
+   - name : 'CODE-VCN01-RouteTable01' 
+     compartment_name: 'CODE-Comp01' 
+     vcn_name: 'CODE-VCN01' 
+     route_rules: 
+        - destination: '192.168.0.0/16'
+          destination_type    : CIDR_BLOCK      # CIDR_BLOCK or SERVICE_CIDR_BLOCK
+          network_entity_name : 'CODE-DRG01'
+          network_entity_type : 'drg'  # drg internet_gateway nat_gateway service_gateway
+
+        - destination: '10.0.0.0/8'
+          destination_type    : CIDR_BLOCK      # CIDR_BLOCK or SERVICE_CIDR_BLOCK
+          network_entity_name : 'CODE-DRG01'
+          network_entity_type : 'drg'  # drg internet_gateway nat_gateway service_gateway
+
+        - destination: '0.0.0.0/0'
+          destination_type    : CIDR_BLOCK      # CIDR_BLOCK or SERVICE_CIDR_BLOCK
+          network_entity_name : 'CODE-VCN01-IGW01'
+          network_entity_type : 'internet_gateway'  # drg internet_gateway nat_gateway service_gateway
+
+oci_drgs:
+   - name : 'CODE-DRG01' 
+     compartment_name: 'CODE-Comp01' 
+     attachment_name : 'CODE-DRG01-VCN01'
+     attach_to_vcn   : 'CODE-VCN01'
+
+oci_cpes:
+   - name : 'CODE-CPE01'
+     compartment_name: 'CODE-Comp01'
+     ip_address: '1.1.1.1'
+
+   - name : 'CODE-CPE02'
+     compartment_name: 'CODE-Comp01'
+     ip_address: '2.2.2.2'
+
+oci_ipsecs:
+   - name : 'CODE-IPSEC01'
+     compartment_name: 'CODE-Comp01'
+     cpe_name : 'CODE-CPE01'
+     drg_name : 'CODE-DRG01'
+     ipsec_phase2_networks :
+        - '10.0.0.0/9'
+        - '10.128.0.0/9'
+        - '192.168.0.0/17'
+        - '192.168.128.0/17'
+     ike_version:  'V1'
+     routing: 'STATIC' # either BGP dynamic routing, STATIC routing or POLICY routing
+     cpe_local_identifier      : '1.1.1.1'
+     cpe_local_identifier_type : 'IP_ADDRESS'
+
+   - name : 'CODE-IPSEC02'
+     compartment_name: 'CODE-Comp01'
+     cpe_name : 'CODE-CPE01'
+     drg_name : 'CODE-DRG01'
+     ipsec_phase2_networks :
+        - '10.0.0.0/8'
+        - '192.168.0.0/16'
+     ike_version:  'V1'
+     routing: 'STATIC' # either BGP dynamic routing, STATIC routing or POLICY routing
+     cpe_local_identifier      : '2.2.2.2'
+     cpe_local_identifier_type : 'IP_ADDRESS'
+
+oci_dhcp_options:
+   - compartment_name : 'CODE-Comp01'
+     vcn_name : 'CODE-VCN01'
+     name : 'CODE-Comp01-VCN01-DHCP-OPT-01'
+     option_DomainNameServer_servertype : 'VcnLocalPlusInternet' # VcnLocalPlusInternet or VcnLocal or CustomDnsServer
+#     option_DomainNameServer_servertype : 'CustomDnsServer' # VcnLocalPlusInternet or VcnLocal or CustomDnsServer
+#     option_DomainNameServer_custom_dns_servers : '"192.168.1.1","192.168.2.1"'     # Required only if option_DomainNameServer_servertype=CustomDnsServer
+     option_SearchDomain_search_domain_names : 'codevcn01.oraclevcn.com'
+              
+oci_subnets:
+   - name : 'CODE-VCN01-Subnet01'
+     compartment_name : 'CODE-Comp01'
+     vcn_name : 'CODE-VCN01'
+#     availability_domain: 'fKAi:EU-FRANKFURT-1-AD-1' # Uncomment if you want a non-reginal subnet. Format : <ad_prefix>:<region-name>-AD-[1,2,3] 
+     cidr_block : '10.25.102.0/24'
+     subnet_security_lists :
+         - name: 'CODE-VCN01-SecList01'
+     dhcp_options_name: 'CODE-Comp01-VCN01-DHCP-OPT-01'
+     dns_label : 'subnet01'
+     prohibit_public_ip_on_vnic : 'false' # 'true' for private subnets or 'false' for public subnets
+     route_table_name : 'CODE-VCN01-RouteTable01'
+
+oci_compute_instances:
+   - name : 'vm01'
+     compartment_name : 'CODE-Comp01'
+     availability_domain : 'fKAi:EU-FRANKFURT-1-AD-1'
+     shape : 'VM.Standard.E2.1'
+     vnic_name : 'vnic0'
+     vnic_subnet_name: 'CODE-VCN01-Subnet01'
+     vnic_assign_public_ip: 'false'
+     vnic_hostname_label: 'vm01'
+     vnic_private_ip : '10.25.102.10'
+     fault_domain : 'FAULT-DOMAIN-2' # 'FAULT-DOMAIN-1' or 'FAULT-DOMAIN-2' or 'FAULT-DOMAIN-3' 
+     ssh_authorized_keys : 'ssh-rsa AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.....'
+     source_details_source_id : ocid1.image.oc1.eu-frankfurt-1.aaaaaaaa33ahhalbp3q6nppiigilbeyjelhsi6vt7g2cia534tvagnx26moa
+     source_details_boot_volume_size_in_gbs : 64
+     
+    
+   - name : 'vm02'
+     compartment_name : 'CODE-Comp01'
+     availability_domain : 'fKAi:EU-FRANKFURT-1-AD-1'
+     shape : 'VM.Standard.E2.1'
+     vnic_name : 'vnic0'
+     vnic_subnet_name: 'CODE-VCN01-Subnet01'
+     vnic_assign_public_ip: 'false'
+     vnic_hostname_label: 'vm02'
+     vnic_private_ip : '10.25.102.50'
+     fault_domain : 'FAULT-DOMAIN-1' # 'FAULT-DOMAIN-1' or 'FAULT-DOMAIN-2' or 'FAULT-DOMAIN-3' 
+     ssh_authorized_keys : 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDT8COwiguLLGf4JijOyE0I2pIx9wm8ZI0hwWZWfRmf64ElzZJv43CQzzpL0RLvrQjexTl+lvngt3aVa0XUq/t1GuOeNaMfvXgxEBzNqGiakjskh518zvRWKwrHqJjKP2f5bu4y7JhjTa1wsUgzwxiO7k79FF6l5730RoEPjhSmXUSskDb4mCq4MJaEfZjgXgff72Wy3p3juu5neTZ4jshwDoeAfKK+/B/nV/yyMOWBMJYIXn9uI/R2qlYjNgoS0utO9vra4fILpWH1UOnsoZccL8LcJ6qlChjMEB7PjslOaxfVbVKt/oLWtnTurm4q/4oN8EMuZ/nAA+wKRf6+R9u8eO1zFR9GIDM1ZvOyvn6mNVI46YoJr7QDTD0F/PsfNLmOhrz52LZxP1sc8nNuJ9/dHJwCgDwQclwYrJYxrBGjyubWneC9qQFuYxSzmbXKMH+MahI0QUEpoJ5ybV0GYN3wQIHep8ZIcOXEZdI9rJeGmK70AeWHKG5ZqhonYh/gaWWNvVEqzPQ6t39j4bsWO9P822pOdCmJF9jmJEHP3DRmSkBiPvB83U3uFCO/yjd0Qque6hJmda6uzXkcjRGBteXfMr2dhSDARlQdYQDp/54tAqUIG5pH/N9jT2ASDAF1dnPGEIVEzQoO5wukxsaOMMM+F36D1K0h5PpsNzNMfRR75w== daniel@darkstar'
+     source_details_source_id : ocid1.image.oc1.eu-frankfurt-1.aaaaaaaa33ahhalbp3q6nppiigilbeyjelhsi6vt7g2cia534tvagnx26moa
+     source_details_boot_volume_size_in_gbs : 64
+
+oci_block_volumes:
+   - name: 'vm01-vol01'
+     compartment_name : 'CODE-Comp01'
+     availability_domain : 'fKAi:EU-FRANKFURT-1-AD-1'
+     size_in_gbs : 200
+#    source_volume_name : name of the volume or volume backup.     
+#    source_volume_type : The type can be one of these values: volume, volumeBackup
+
+   - name: 'vm02-vol01'
+     compartment_name : 'CODE-Comp01'
+     availability_domain : 'fKAi:EU-FRANKFURT-1-AD-1'
+     size_in_gbs : 400
+
+oci_block_volume_attachments:
+   - name: 'vm01-vol01-attachment'
+     instance_name : 'vm01'
+     volume_name : 'vm01-vol01'
+     attachment_type : 'paravirtualized' # 'iscsi' or 'paravirtualized'
+
+   - name: 'vm02-vol01-attachment'
+     instance_name : 'vm02'
+     volume_name : 'vm02-vol01'
+     attachment_type : 'paravirtualized' # 'iscsi' or 'paravirtualized'
+
+oci_objectstorage_buckets:
+   - name : 'Systems'
+     compartment_name : 'CODE-Comp01'
+     namespace : 'UNIQUECODE'
+     access_type : 'NoPublicAccess'  # 'NoPublicAccess' or 'ObjectRead'
+     storage_tier : 'Standard' # 'Standard' or 'Archive'
+
+oci_public_ips:
+   - name : 'vm01-publicIP'
+     compartment_name : 'CODE-Comp01'
+     lifetime : 'RESERVED'
+     instance_name : 'vm01'
+     subnet_name : 'CODE-VCN01-Subnet01'
+
+   - name : 'vm02-publicIP'
+     compartment_name : 'CODE-Comp01'
+     lifetime : 'RESERVED'
+     instance_name : 'vm02'
+     subnet_name : 'CODE-VCN01-Subnet01'
+
+oci_boot_volume_backup_policy_assignments:
+    - name: 'vm01-Gold-Backup-Policy'
+      policy_id: 'ocid1.volumebackuppolicy.oc1..aaaaaaaagcremuefit7dpcnjpdrtphjk4bwm3emm55t6cghctt2m6iyyjdva'      # Gold Policy
+      instance_name: 'vm01'
+
+    - name: 'vm02-Gold-Backup-Policy'
+      policy_id: 'ocid1.volumebackuppolicy.oc1..aaaaaaaagcremuefit7dpcnjpdrtphjk4bwm3emm55t6cghctt2m6iyyjdva'      # Gold Policy
+      instance_name: 'vm02'
+
+oci_volume_backup_policy_assignments:
+    - name: 'vm01-vol01-Gold-Backup-Policy'
+      policy_id: 'ocid1.volumebackuppolicy.oc1..aaaaaaaagcremuefit7dpcnjpdrtphjk4bwm3emm55t6cghctt2m6iyyjdva'      # Gold Policy
+      volume_name: 'vm01-vol01'
+
+    - name: 'vm02-vol01-Gold-Backup-Policy'
+      policy_id: 'ocid1.volumebackuppolicy.oc1..aaaaaaaagcremuefit7dpcnjpdrtphjk4bwm3emm55t6cghctt2m6iyyjdva'      # Gold Policy
+      volume_name: 'vm02-vol01'
+
+oci_volume_groups:
+   - name: 'CODE-VG01-AD1'
+     availability_domain: 'fKAi:EU-FRANKFURT-1-AD-1'
+     compartment_name: 'CODE-Comp01'
+     type: 'volumeIds'      # The type can be one of these values: volumeGroupBackupId, volumeGroupId, volumeIds
+     boot_volume_of_instances:
+                              - 'vm01'
+                              - 'vm02'
+     volumes:
+              - 'vm01-vol01'
+              - 'vm02-vol01'
+                               
