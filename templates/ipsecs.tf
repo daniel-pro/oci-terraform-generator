@@ -39,27 +39,30 @@ data "oci_core_ipsec_connection_tunnels" "{{ item.name }}-tunnels" {
 }
 
 resource "oci_core_ipsec_connection_tunnel_management" "{{ item.name }}-tunnel1-mgmt" {
-    #Required
     ipsec_id = oci_core_ipsec.{{ item.name }}.id
     tunnel_id = data.oci_core_ipsec_connection_tunnels.{{ item.name }}-tunnels.ip_sec_connection_tunnels[0].id
     routing = "{{ item.routing }}"
-    #Optional
-{% if item.bgp_session_info is defined %}
+
+{% if item.bgp_session1_info is defined %}
+{% for bgp in item.bgp_session1_info %}
     bgp_session_info {
         #Optional
-        customer_bgp_asn = var.ip_sec_connection_tunnel_management_bgp_session_info_customer_bgp_asn
-        customer_interface_ip = var.ip_sec_connection_tunnel_management_bgp_session_info_customer_interface_ip
-        oracle_interface_ip = var.ip_sec_connection_tunnel_management_bgp_session_info_oracle_interface_ip
+        customer_bgp_asn = "{{ bgp.customer_bgp_asn }}"
+        customer_interface_ip = "{{ bgp.customer_interface_ip }}"
+        oracle_interface_ip = "{{ bgp.oracle_interface_ip }}"
     }
+{% endfor %}
 {% endif %}
     display_name = "{{ item.name }}-tunnel1"
 
 {% if item.encryption_domain_config is defined %}
+{% for enc_dom_cfg in item.encryption_domain_config %}
     encryption_domain_config {
         #Optional
-        cpe_traffic_selector = var.ip_sec_connection_tunnel_management_encryption_domain_config_cpe_traffic_selector
-        oracle_traffic_selector = var.ip_sec_connection_tunnel_management_encryption_domain_config_oracle_traffic_selector
+        cpe_traffic_selector =  "{{ enc_dom_cfg.cpe_traffic_selector }}"
+        oracle_traffic_selector = "{{ enc_dom_cfg.oracle_traffic_selector }}"
     }
+{% endfor %}
 {% endif %}
 
 {% if item.shared_secret is defined %}
@@ -72,28 +75,34 @@ resource "oci_core_ipsec_connection_tunnel_management" "{{ item.name }}-tunnel1-
 }
 
 resource "oci_core_ipsec_connection_tunnel_management" "{{ item.name }}-tunnel2-mgmt" {
-    #Required
     ipsec_id = oci_core_ipsec.{{ item.name }}.id
     tunnel_id = data.oci_core_ipsec_connection_tunnels.{{ item.name }}-tunnels.ip_sec_connection_tunnels[1].id
     routing = "{{ item.routing }}"
-    #Optional
-{% if item.bgp_session_info is defined %}
+
+{% if item.bgp_session2_info is defined %}
+{% for bgp in item.bgp_session2_info %}
     bgp_session_info {
         #Optional
-        customer_bgp_asn = var.ip_sec_connection_tunnel_management_bgp_session_info_customer_bgp_asn
-        customer_interface_ip = var.ip_sec_connection_tunnel_management_bgp_session_info_customer_interface_ip
-        oracle_interface_ip = var.ip_sec_connection_tunnel_management_bgp_session_info_oracle_interface_ip
+        customer_bgp_asn = "{{ bgp.customer_bgp_asn }}"
+        customer_interface_ip = "{{ bgp.customer_interface_ip }}"
+        oracle_interface_ip = "{{ bgp.oracle_interface_ip }}"
     }
+{% endfor %}
 {% endif %}
+
+
     display_name = "{{ item.name }}-tunnel2"
 
 {% if item.encryption_domain_config is defined %}
+{% for enc_dom_cfg in item.encryption_domain_config %}
     encryption_domain_config {
         #Optional
-        cpe_traffic_selector = var.ip_sec_connection_tunnel_management_encryption_domain_config_cpe_traffic_selector
-        oracle_traffic_selector = var.ip_sec_connection_tunnel_management_encryption_domain_config_oracle_traffic_selector
+        cpe_traffic_selector =  "{{ enc_dom_cfg.cpe_traffic_selector }}"
+        oracle_traffic_selector = "{{ enc_dom_cfg.oracle_traffic_selector }}"
     }
+{% endfor %}
 {% endif %}
+
 
 {% if item.shared_secret is defined %}
     shared_secret = "{{ item.shared_secret }}"

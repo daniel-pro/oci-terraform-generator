@@ -103,9 +103,17 @@ oci_ipsecs:
         - '192.168.0.0/17'
         - '192.168.128.0/17'
      ike_version:  'V1'
-     routing: 'STATIC' # either BGP dynamic routing, STATIC routing or POLICY routing
+     routing: 'BGP' # either BGP dynamic routing, STATIC routing or POLICY routing
      cpe_local_identifier      : '1.1.1.1'
      cpe_local_identifier_type : 'IP_ADDRESS'
+     bgp_session1_info:
+                  - customer_bgp_asn: '64512'
+                    customer_interface_ip: '169.254.10.2/30'
+                    oracle_interface_ip: '169.254.10.3/30'
+     bgp_session2_info:
+                 - customer_bgp_asn: '64512'
+                   customer_interface_ip: '169.254.20.2/30'
+                   oracle_interface_ip: '169.254.20.3/30'
 
    - name : 'CODE-IPSEC02'
      compartment_name: 'CODE-Comp01'
