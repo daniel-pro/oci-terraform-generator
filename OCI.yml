@@ -175,7 +175,7 @@ oci_compute_instances:
      vnic_hostname_label: 'vm02'
      vnic_private_ip : '10.25.102.50'
      fault_domain : 'FAULT-DOMAIN-1' # 'FAULT-DOMAIN-1' or 'FAULT-DOMAIN-2' or 'FAULT-DOMAIN-3' 
-     ssh_authorized_keys : 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDT8COwiguLLGf4JijOyE0I2pIx9wm8ZI0hwWZWfRmf64ElzZJv43CQzzpL0RLvrQjexTl+lvngt3aVa0XUq/t1GuOeNaMfvXgxEBzNqGiakjskh518zvRWKwrHqJjKP2f5bu4y7JhjTa1wsUgzwxiO7k79FF6l5730RoEPjhSmXUSskDb4mCq4MJaEfZjgXgff72Wy3p3juu5neTZ4jshwDoeAfKK+/B/nV/yyMOWBMJYIXn9uI/R2qlYjNgoS0utO9vra4fILpWH1UOnsoZccL8LcJ6qlChjMEB7PjslOaxfVbVKt/oLWtnTurm4q/4oN8EMuZ/nAA+wKRf6+R9u8eO1zFR9GIDM1ZvOyvn6mNVI46YoJr7QDTD0F/PsfNLmOhrz52LZxP1sc8nNuJ9/dHJwCgDwQclwYrJYxrBGjyubWneC9qQFuYxSzmbXKMH+MahI0QUEpoJ5ybV0GYN3wQIHep8ZIcOXEZdI9rJeGmK70AeWHKG5ZqhonYh/gaWWNvVEqzPQ6t39j4bsWO9P822pOdCmJF9jmJEHP3DRmSkBiPvB83U3uFCO/yjd0Qque6hJmda6uzXkcjRGBteXfMr2dhSDARlQdYQDp/54tAqUIG5pH/N9jT2ASDAF1dnPGEIVEzQoO5wukxsaOMMM+F36D1K0h5PpsNzNMfRR75w== daniel@darkstar'
+     ssh_authorized_keys : 'ssh-rsa AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.....'
      source_details_source_id : ocid1.image.oc1.eu-frankfurt-1.aaaaaaaa33ahhalbp3q6nppiigilbeyjelhsi6vt7g2cia534tvagnx26moa
      source_details_boot_volume_size_in_gbs : 64
 
