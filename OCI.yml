@@ -3,8 +3,8 @@
 oci_root_compartment_id: ocid1.tenancy.oc1..<<<<>>>>
 
 oci_compartments:
-   - name : 'Code-Comp01'  
-     description: 'Code Compartment 01' 
+   - name : 'CODE-Comp01'  
+     description: 'CODE Compartment 01' 
      freeform_tags: '"Department"= "Finance"'
 
 oci_vcns:
