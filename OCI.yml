@@ -6,6 +6,11 @@ oci_compartments:
    - name : 'CODE-Comp01'  
      description: 'CODE Compartment 01' 
      freeform_tags: '"Department"= "Finance"'
+     compartment_id: ocid1.tenancy.oc1..<<<<>>>>
+   - name : 'CODE-SubComp02'
+     description: 'CODE Compartment 02'
+     freeform_tags: '"Department"= "Finance"'
+     compartment_id: 'CODE-Comp01'
 
 oci_vcns:
    - name : 'CODE-VCN01' 

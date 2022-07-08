@@ -2,7 +2,11 @@
 
 {% for item in oci_compartments %}
 resource "oci_identity_compartment" "{{ item.name }}" {
-    compartment_id = "{{ oci_root_compartment_id }}"
+{% if item.compartment_id.startswith('ocid') %}
+    compartment_id = "{{ item.compartment_id }}"
+{% else %}
+    compartment_id = oci_identity_compartment.{{ item.compartment_id }}.id
+{% endif %}
     description = "{{ item.description }}"
     name = "{{ item.name }}"
 
